@@ -5,12 +5,13 @@ import { Form } from 'react-router';
 import FormInput from '../components/FormInput';
 import { SubmitBtn } from '../components/SubmitBtn';
 import { useForm } from 'react-hook-form';
+import { api } from '../utils/api';
 
 export const registerAction = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   try {
-    const response = await customFetch.post('/register', data);
+    const response = await api.post('/register', data);
     toast.success('User registered successfully');
     return redirect('/login');
   } catch (error) {

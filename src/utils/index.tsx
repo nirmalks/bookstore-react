@@ -1,6 +1,14 @@
-import axios from 'axios';
+export const getUserFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem('user')) || null;
+};
 
-const url = '/api';
-export const customFetch = axios.create({
-  baseURL: url,
-});
+export const themes = {
+  light: 'light',
+  dark: 'dark',
+};
+
+export const getThemeFromLocalStorage = () => {
+  const theme = localStorage.getItem('theme') || themes.light;
+  document.documentElement.setAttribute('data-theme', theme);
+  return theme;
+};

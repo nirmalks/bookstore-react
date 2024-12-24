@@ -4,14 +4,15 @@ import { SubmitBtn } from '../components/SubmitBtn';
 import { toast } from 'react-toastify';
 import { loginUser } from '../features/user/userSlice';
 import { useForm } from 'react-hook-form';
-import { customFetch } from '../utils';
+import { api } from '../utils/api';
+
 export const loginAction =
   (store) =>
   async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     try {
-      const response = await customFetch.post('/login', data);
+      const response = await api.post('/login', data);
       toast.success('User logged in successfully');
       store.dispatch(loginUser(response.data));
       return redirect('/');
