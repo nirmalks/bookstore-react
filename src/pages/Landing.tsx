@@ -16,9 +16,7 @@ const featuredBooksQuery = {
 export const landingLoader = (queryClient) => async () => {
   try {
     const response = await queryClient.ensureQueryData(featuredBooksQuery);
-    console.log(response);
     const books = response.data.content;
-    console.log(books);
     return { books };
   } catch (error) {
     console.error('Error fetching featured books:', error);

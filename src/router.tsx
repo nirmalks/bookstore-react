@@ -8,6 +8,8 @@ import Register, { registerAction } from './pages/Register';
 import About from './pages/About';
 import { queryClient } from './queryClient';
 import store from './store';
+import Books, { booksLoader } from './pages/Books';
+import SingleBook, { singleBookLoader } from './pages/SingleBook';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,18 @@ const router = createBrowserRouter([
         path: '/about',
         element: <About />,
         errorElement: <ErrorPage></ErrorPage>,
+      },
+      {
+        path: '/books',
+        element: <Books />,
+        errorElement: <ErrorPage></ErrorPage>,
+        loader: booksLoader(queryClient),
+      },
+      {
+        path: '/books/:id',
+        element: <SingleBook />,
+        errorElement: <ErrorPage></ErrorPage>,
+        loader: singleBookLoader(queryClient),
       },
     ],
   },

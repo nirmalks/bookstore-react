@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import prob from '../assets/prob.jpg';
 import { Link } from 'react-router';
+import harry from '/images/harry_potter.jpg?url';
+import alchemist from '/images/the_alchemist.jpg?url';
 
-const carouselImages = [prob];
+const carouselImages = [prob, harry, alchemist];
 
 export const Hero = () => {
   const carouselRef = useRef(null);
@@ -43,12 +45,9 @@ export const Hero = () => {
           </Link>
         </div>
       </div>
-      <div className="carousel max-w-full">
-        <div id="slide1" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-            className="w-full rounded-lg"
-          />
+      <div className="md:ml-4 carousel max-w-full h-72">
+        <div id="slide1" className="carousel-item relative w-full ">
+          <img src={prob} className="w-full rounded-lg " />
           <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
             <a href="#slide4" className="btn btn-circle">
               ❮
@@ -59,10 +58,7 @@ export const Hero = () => {
           </div>
         </div>
         <div id="slide2" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-            className="w-full rounded-lg"
-          />
+          <img src={harry} className="w-full rounded-lg" />
           <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
             <a href="#slide1" className="btn btn-circle">
               ❮
@@ -73,10 +69,7 @@ export const Hero = () => {
           </div>
         </div>
         <div id="slide3" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-            className="w-full rounded-lg"
-          />
+          <img src={alchemist} className="w-full rounded-lg" />
           <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
             <a href="#slide2" className="btn btn-circle">
               ❮
