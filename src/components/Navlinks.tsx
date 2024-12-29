@@ -11,10 +11,14 @@ const links = [
 ];
 
 const NavLinks = () => {
+  const user = useSelector((state) => state.userState.user);
   return (
     <>
       {links.map((link) => {
         const { id, url, text } = link;
+        if ((url === 'checkout' || url === 'orders') && !user) {
+          return;
+        }
         return (
           <li key={id}>
             <NavLink className="capitalize" to={url}>

@@ -2,7 +2,7 @@ import BookFilters from '../components/BookFilters';
 import BooksContainer from '../components/BooksContainer';
 import { api } from '../utils/api';
 
-const url = '/books';
+const url = '/books/search';
 
 const allBooksQuery = (queryParams) => {
   const { search, category, company, sort, price, shipping, page } =
@@ -32,7 +32,8 @@ export const booksLoader =
       ...new URL(request.url).searchParams.entries(),
     ]);
     const response = await queryClient.ensureQueryData(allBooksQuery(params));
-    return { products, meta, params };
+    const { content: books, ...meta } = response.data;
+    return { books, params, meta };
   };
 
 const Books = () => {
