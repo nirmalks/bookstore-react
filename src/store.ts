@@ -8,11 +8,6 @@ export const store = configureStore({
     userState: userReducer,
     cartState: cartReducer,
   },
-  // middleware: (getDefaultMiddleware) => {
-  //   console.log('Applying middleware...');
-  //   return getDefaultMiddleware().concat(axiosMiddleware);
-
-  // },
 });
 
 export default store;

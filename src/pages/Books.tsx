@@ -2,27 +2,37 @@ import BookFilters from '../components/BookFilters';
 import BooksContainer from '../components/BooksContainer';
 import { api } from '../utils/api';
 
-const url = '/books/search';
+const booksSearchUrl = '/books/search';
+const getGenreUrl = '/genres';
 
 const allBooksQuery = (queryParams) => {
-  const { search, category, company, sort, price, shipping, page } =
+  const { search, genre, sort, minPrice, maxPrice, shipping, page } =
     queryParams;
 
   return {
     queryKey: [
       'books',
       search ?? '',
-      category ?? 'all',
-      company ?? 'all',
+      genre ?? '',
       sort ?? 'a-z',
-      price ?? 100000,
+      minPrice ?? 0,
+      maxPrice ?? 1000,
       shipping ?? false,
       page ?? 1,
     ],
     queryFn: () =>
-      api.get(url, {
+      api.get(booksSearchUrl, {
         params: queryParams,
       }),
+  };
+};
+
+const genreQuery = () => {
+  return {
+    queryKey: ['getGenres'],
+    queryFn: () => {
+      return api.get(getGenreUrl);
+    },
   };
 };
 export const booksLoader =
@@ -32,8 +42,10 @@ export const booksLoader =
       ...new URL(request.url).searchParams.entries(),
     ]);
     const response = await queryClient.ensureQueryData(allBooksQuery(params));
+    const genreResponse = await queryClient.ensureQueryData(genreQuery());
     const { content: books, ...meta } = response.data;
-    return { books, params, meta };
+    const { content: genres } = genreResponse.data;
+    return { books, params, meta, genres };
   };
 
 const Books = () => {
