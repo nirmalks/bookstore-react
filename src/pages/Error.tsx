@@ -1,4 +1,4 @@
 const ErrorPage: React.FC = () => {
-  return <div>hello login</div>;
+  return <div>Something went wrong</div>;
 };
 export default ErrorPage;

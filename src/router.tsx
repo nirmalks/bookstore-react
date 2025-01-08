@@ -10,6 +10,9 @@ import { queryClient } from './queryClient';
 import store from './store';
 import Books, { booksLoader } from './pages/Books';
 import SingleBook, { singleBookLoader } from './pages/SingleBook';
+import Cart from './pages/Cart';
+import Checkout, { checkoutLoader } from './pages/Checkout';
+import { checkoutAction } from './components/CheckoutForm';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +42,18 @@ const router = createBrowserRouter([
         element: <SingleBook />,
         errorElement: <ErrorPage></ErrorPage>,
         loader: singleBookLoader(queryClient),
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
+        errorElement: <ErrorPage></ErrorPage>,
+      },
+      {
+        path: '/checkout',
+        element: <Checkout />,
+        errorElement: <ErrorPage></ErrorPage>,
+        loader: checkoutLoader(store),
+        action: checkoutAction(store, queryClient),
       },
     ],
   },

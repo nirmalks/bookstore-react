@@ -2,6 +2,8 @@ import { Link, useLoaderData } from 'react-router';
 import { api } from '../utils/api';
 import { formatPrice, generateQuantityOptions } from '../utils';
 import { useState } from 'react';
+import { addItem } from '../features/cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const singleBookQuery = (id) => {
   return {
@@ -20,17 +22,16 @@ export const singleBookLoader =
 
 const SingleBook: React.FC = () => {
   const { book } = useLoaderData();
-  console.log(book);
   const { title, price, isbn, publishedDate, description, imagePath, stock } =
     book;
   const image = `/images/${imagePath}`;
   const formattedPrice = formatPrice(price);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const handleQuantity = (e) => {
     setQuantity(parseInt(e.target.value));
   };
-  const updatedBook = { ...book, stock: stock - quantity };
-  console.log(updatedBook);
+  const updatedBook = { ...book, stock: stock - quantity, quantity };
+  const dispatch = useDispatch();
   return (
     <section className="p-4">
       <div className="text-md breadcrumbs">
@@ -72,7 +73,12 @@ const SingleBook: React.FC = () => {
             </select>
           </div>
           <div className="mt-10 ">
-            <button className="btn btn-secondary btn-md">Add to Cart</button>
+            <button
+              className="btn btn-secondary btn-md"
+              onClick={() => dispatch(addItem({ book: updatedBook }))}
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

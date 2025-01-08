@@ -15,15 +15,12 @@ const BookFilters = () => {
   const navigate = useNavigate();
   const onSubmit = (data) => {
     console.log('on submit');
-    console.log(data);
     const queryParams = new URLSearchParams({
       ...data,
       minPrice: 0,
       maxPrice: data.price,
     });
-    console.log(queryParams);
     const customUrl = `/books/search?${queryParams.toString()}`;
-    console.log('custom url', customUrl);
     const formData = new FormData();
     for (const [key, value] of queryParams.entries()) {
       formData.append(key, value);
