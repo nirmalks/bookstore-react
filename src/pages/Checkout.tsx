@@ -21,9 +21,13 @@ const Checkout: React.FC = () => {
   return (
     <>
       <SectionTitle text="Place your order"></SectionTitle>
-      <div className="mt-8 grid gap-8 md:grid-cols-2 items-start">
-        <CheckoutForm />
-        <CartTotal />
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="mt-8 ">
+          <CheckoutForm />
+        </div>
+        <div className="mt-8 md:grid-cols-1 items-start justify-center">
+          <CartTotal />
+        </div>
       </div>
     </>
   );

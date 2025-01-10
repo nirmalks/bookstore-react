@@ -1,3 +1,4 @@
+import { redirect } from 'react-router';
 import { AppDispatch, RootState } from '../store';
 import { api } from './api';
 
@@ -27,9 +28,12 @@ export const setupInterceptors = (store: {
       return response;
     },
     (error) => {
+      console.log('insie error', error.response);
       if (error.response) {
-        if (error.response.status === 401) {
+        console.log('inside err resp', error.response.status);
+        if (error.response.status === 401 || error.response.status === 403) {
           console.error('Unauthorized. Logging out...');
+          error.isAuthError = true;
         }
       } else if (error.request) {
         console.error('No response from server.');
