@@ -2,8 +2,6 @@ import { Form, redirect, useSubmit } from 'react-router';
 import FormInput from './FormInput';
 import { SubmitBtn } from './SubmitBtn';
 import { useForm } from 'react-hook-form';
-import { formatPrice } from '../utils';
-import { queryClient } from '../queryClient';
 import { toast } from 'react-toastify';
 import { clearCart } from '../features/cart/cartSlice';
 import { api } from '../utils/api';
@@ -36,9 +34,8 @@ export const checkoutAction = (store, queryClient) => {
       queryClient.removeQueries(['orders']);
       store.dispatch(clearCart());
       toast.success('Order placed successfully');
-      return redirect('/orders');
+      return redirect('/orders?page=0');
     } catch (error) {
-      console.log(error);
       if (error.isAuthError) {
         return redirect('/login');
       }
@@ -54,7 +51,6 @@ const CheckoutForm = () => {
   const { register, handleSubmit } = useForm();
   const submit = useSubmit();
   const onSubmit = (data) => {
-    console.log('insdie on submit');
     return submit(data, { method: 'post' });
   };
   return (

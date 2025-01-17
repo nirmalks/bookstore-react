@@ -6,7 +6,7 @@ const links = [
   { id: 2, url: 'about', text: 'About' },
   { id: 3, url: 'books', text: 'Books' },
   { id: 4, url: 'checkout', text: 'Checkout' },
-  { id: 5, url: 'orders', text: 'Orders' },
+  { id: 5, url: 'orders?page=0', text: 'Orders' },
 ];
 
 const NavLinks = () => {

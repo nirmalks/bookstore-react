@@ -13,6 +13,7 @@ import SingleBook, { singleBookLoader } from './pages/SingleBook';
 import Cart from './pages/Cart';
 import Checkout, { checkoutLoader } from './pages/Checkout';
 import { checkoutAction } from './components/CheckoutForm';
+import Orders, { ordersLoader } from './pages/Orders';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,12 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage></ErrorPage>,
         loader: checkoutLoader(store),
         action: checkoutAction(store, queryClient),
+      },
+      {
+        path: '/orders',
+        element: <Orders></Orders>,
+        errorElement: <ErrorPage></ErrorPage>,
+        loader: ordersLoader(store, queryClient),
       },
     ],
   },
