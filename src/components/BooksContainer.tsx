@@ -5,11 +5,10 @@ import { useLoaderData } from 'react-router';
 import BooksList from './BooksList';
 
 const BooksContainer = () => {
-  const { books, meta, params } = useLoaderData();
-
+  const { meta } = useLoaderData();
   const { totalElements } = meta;
   const [layout, setLayout] = useState('grid');
-  const setActiveStyles = (style) => {
+  const setActiveStyles = (style: string) => {
     return `text-xl btn btn-circle btn-sm ${
       style === layout
         ? 'btn-primary text-primary-content'

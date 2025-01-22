@@ -1,21 +1,24 @@
-import { Form, redirect, useSubmit } from 'react-router';
+import { ActionFunctionArgs, redirect, useSubmit } from 'react-router';
 import FormInput from './FormInput';
 import { SubmitBtn } from './SubmitBtn';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { clearCart } from '../features/cart/cartSlice';
 import { api } from '../utils/api';
+import { QueryClient } from '@tanstack/react-query';
+import { StoreProps } from '../types/store';
+import { getErrorMessage } from '../utils';
+import { CheckoutFormData } from '../types/checkout';
+import { Book } from '../types/books';
 
-export const checkoutAction = (store, queryClient) => {
-  return async ({ request }) => {
+export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
+  return async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
-    console.log(Object.fromEntries(formData));
     const { address, city, state, country, pinCode } =
       Object.fromEntries(formData);
     const user = store.getState().userState.user;
-    const { cartItems, orderTotal, numItemsInCart } =
-      store.getState().cartState;
-    const orderItems = cartItems.map((item) => {
+    const { cartItems } = store.getState().cartState;
+    const orderItems = cartItems.map((item: Book) => {
       console.log(item);
       return {
         price: item.price,
@@ -24,33 +27,28 @@ export const checkoutAction = (store, queryClient) => {
       };
     });
     const info = {
-      userId: user.userId,
+      userId: user?.userId,
       address: { address, city, state, country, pinCode },
       items: orderItems,
     };
 
     try {
-      const response = await api.post('/orders/direct', { ...info });
-      queryClient.removeQueries(['orders']);
+      await api.post('/orders/direct', { ...info });
+      queryClient.removeQueries({ queryKey: ['orders'] });
       store.dispatch(clearCart());
       toast.success('Order placed successfully');
       return redirect('/orders?page=0');
     } catch (error) {
-      if (error.isAuthError) {
-        return redirect('/login');
-      }
-      const errorMessage =
-        error?.response?.data?.error?.message ||
-        'There was an error placing your order';
+      const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
       return null;
     }
   };
 };
 const CheckoutForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<CheckoutFormData>();
   const submit = useSubmit();
-  const onSubmit = (data) => {
+  const onSubmit = (data: CheckoutFormData) => {
     return submit(data, { method: 'post' });
   };
   return (

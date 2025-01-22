@@ -4,8 +4,9 @@ import { redirect } from 'react-router';
 import { toast } from 'react-toastify';
 import CartTotal from '../components/CartTotal';
 import CheckoutForm from '../components/CheckoutForm';
+import { AppState, StoreProps } from '../types/store';
 
-export const checkoutLoader = (store) => () => {
+export const checkoutLoader = (store: StoreProps) => () => {
   const user = store.getState().userState.user;
   if (!user) {
     toast.warn('You must be logged in to checkout');
@@ -14,7 +15,7 @@ export const checkoutLoader = (store) => () => {
   return null;
 };
 const Checkout: React.FC = () => {
-  const cartTotal = useSelector((state) => state.cartState.cartTotal);
+  const cartTotal = useSelector((state: AppState) => state.cartState.cartTotal);
   if (cartTotal === 0) {
     return <SectionTitle text="Your cart is empty" />;
   }

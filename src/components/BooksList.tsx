@@ -1,12 +1,13 @@
 import { Link, useLoaderData } from 'react-router';
 import { formatPrice } from '../utils';
+import { Book } from '../types/books';
 
 const BooksList: React.FC = () => {
   const { books } = useLoaderData();
   console.log(books);
   return (
     <div className="mt-12 grid gap-y-8">
-      {books.map((book) => {
+      {books.map((book: Book) => {
         const { title, price, imagePath } = book;
         const formattedPrice = formatPrice(price);
         const image = `/images/${imagePath}`;

@@ -1,4 +1,4 @@
-import { redirect } from 'react-router';
+import { ActionFunctionArgs, redirect } from 'react-router';
 import { toast } from 'react-toastify';
 import SectionTitle from '../components/SectionTitle';
 import { api } from '../utils/api';
@@ -6,8 +6,13 @@ import OrdersList from '../components/OrdersList';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayjs from 'dayjs';
 import PaginationContainer from '../components/PaginationContainer';
+import { getErrorMessage } from '../utils';
+import { QueryClient } from '@tanstack/react-query';
+import { RootState, AppDispatch } from '../store';
+import { QueryParams } from '../types/params';
+import { User } from '../types/user';
 dayjs.extend(advancedFormat);
-const ordersQuery = (params, user) => {
+const ordersQuery = (params: QueryParams, user: User) => {
   console.log(user);
   return {
     queryKey: ['orders', user.userId, params.page ? parseInt(params.page) : 1],
@@ -19,8 +24,14 @@ const ordersQuery = (params, user) => {
 };
 
 export const ordersLoader =
-  (store, queryClient) =>
-  async ({ request }) => {
+  (
+    store: {
+      getState: () => RootState;
+      dispatch: AppDispatch;
+    },
+    queryClient: QueryClient
+  ) =>
+  async ({ request }: ActionFunctionArgs) => {
     const user = store.getState().userState.user;
 
     if (!user) {
@@ -36,9 +47,8 @@ export const ordersLoader =
       );
       const { content: orders, ...meta } = response.data;
       return { orders, meta, user };
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.error?.message || 'Unable to view orders';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
       return null;
     }

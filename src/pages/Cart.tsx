@@ -3,10 +3,13 @@ import SectionTitle from '../components/SectionTitle';
 import CartItemsList from '../components/CartItemsList';
 import CartTotal from '../components/CartTotal';
 import { Link } from 'react-router';
+import { AppState } from '../types/store';
 
 const Cart: React.FC = () => {
-  const user = useSelector((state) => state.userState.user);
-  const numItemsInCart = useSelector((state) => state.cartState.numItemsInCart);
+  const user = useSelector((state: AppState) => state.userState.user);
+  const numItemsInCart = useSelector(
+    (state: AppState) => state.cartState.numItemsInCart
+  );
   if (numItemsInCart === 0) {
     return <SectionTitle text="Your cart is empty" />;
   }

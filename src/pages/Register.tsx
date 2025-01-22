@@ -1,22 +1,24 @@
-import { Link, redirect, useSubmit } from 'react-router';
+import { Link, redirect, SubmitTarget, useSubmit } from 'react-router';
 import { toast } from 'react-toastify';
-import { customFetch } from '../utils';
-import { Form } from 'react-router';
 import FormInput from '../components/FormInput';
 import { SubmitBtn } from '../components/SubmitBtn';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
+import { ActionFunction } from 'react-router';
+import { getErrorMessage } from '../utils';
+import { ActionFunctionArgs } from 'react-router';
 
-export const registerAction = async ({ request }) => {
+export const registerAction: ActionFunction = async ({
+  request,
+}: ActionFunctionArgs) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   try {
-    const response = await api.post('/register', data);
+    await api.post('/register', data);
     toast.success('User registered successfully');
     return redirect('/login');
-  } catch (error) {
-    const errorMessage =
-      error?.response?.data?.error?.message || 'Incorrect credentials';
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error);
     toast.error(errorMessage);
     return null;
   }
@@ -26,7 +28,7 @@ const Register: React.FC = () => {
   const { register, handleSubmit } = useForm();
   const submit = useSubmit();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: SubmitTarget) => {
     return submit(data, { method: 'post' });
   };
   return (

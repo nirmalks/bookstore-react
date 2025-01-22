@@ -1,26 +1,25 @@
-import { Link, useLoaderData, useNavigate, useSubmit } from 'react-router';
+import { Link, useLoaderData, useSubmit } from 'react-router';
 import FormInput from './FormInput';
 import { useForm } from 'react-hook-form';
 import FormSelect from './FormSelect';
 import FormRange from './FormRange';
+import { Genre } from '../types/genre';
+import { QueryParams } from '../types/params';
 
 const BookFilters = () => {
-  const { books, meta, params, genres } = useLoaderData();
-  const genreList = genres.map((genre) => genre.name);
+  const { params, genres } = useLoaderData();
+  const genreList = genres.map((genre: Genre) => genre.name);
   const sortByList = ['title', 'genres', 'price'];
   const sortOrderList = ['asc', 'desc'];
-  const { search, price, genre, minPrice, maxPrice } = params;
-  const { register, handleSubmit } = useForm();
+  const { search, price } = params;
+  const { register, handleSubmit } = useForm<QueryParams>();
   const submit = useSubmit();
-  const navigate = useNavigate();
-  const onSubmit = (data) => {
-    console.log('on submit');
+  const onSubmit = (data: QueryParams) => {
     const queryParams = new URLSearchParams({
       ...data,
-      minPrice: 0,
+      minPrice: '0',
       maxPrice: data.price,
     });
-    const customUrl = `/books/search?${queryParams.toString()}`;
     const formData = new FormData();
     for (const [key, value] of queryParams.entries()) {
       formData.append(key, value);
@@ -54,7 +53,8 @@ const BookFilters = () => {
           label="Choose price range"
           size="range-sm"
           value={price}
-          maxValue="1000"
+          maxValue={1000}
+          step={50}
           register={register}
         ></FormRange>
         <FormSelect

@@ -2,17 +2,18 @@ import { NavLink, useNavigate } from 'react-router';
 import NavLinks from './Navlinks';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQueryClient } from '@tanstack/react-query';
 import { logoutUser, toggleTheme } from '../features/user/userSlice';
 import { BsCart } from 'react-icons/bs';
 import { FaBarsStaggered } from 'react-icons/fa6';
+import { AppState } from '../types/store';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
-  const user = useSelector((state) => state.userState.user);
-  const numItemsInCart = useSelector((state) => state.cartState.numItemsInCart);
+  const user = useSelector((state: AppState) => state.userState.user);
+  const numItemsInCart = useSelector(
+    (state: AppState) => state.cartState.numItemsInCart
+  );
   const handleTheme = () => {
     dispatch(toggleTheme());
   };

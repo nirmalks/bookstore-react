@@ -1,11 +1,14 @@
+import { QueryClient } from '@tanstack/react-query';
 import BookFilters from '../components/BookFilters';
 import BooksContainer from '../components/BooksContainer';
 import { api } from '../utils/api';
+import { ActionFunctionArgs } from 'react-router';
+import { QueryParams } from '../types/params';
 
 const booksSearchUrl = '/books/search';
 const getGenreUrl = '/genres';
 
-const allBooksQuery = (queryParams) => {
+const allBooksQuery = (queryParams: QueryParams) => {
   const { search, genre, sort, minPrice, maxPrice, shipping, page } =
     queryParams;
 
@@ -36,8 +39,8 @@ const genreQuery = () => {
   };
 };
 export const booksLoader =
-  (queryClient) =>
-  async ({ request }) => {
+  (queryClient: QueryClient) =>
+  async ({ request }: ActionFunctionArgs) => {
     const params = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);

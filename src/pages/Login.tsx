@@ -1,14 +1,17 @@
-import { Form, Link, redirect, useSubmit } from 'react-router';
+import { ActionFunctionArgs, Link, redirect, useSubmit } from 'react-router';
 import FormInput from '../components/FormInput';
 import { SubmitBtn } from '../components/SubmitBtn';
 import { toast } from 'react-toastify';
 import { loginUser } from '../features/user/userSlice';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
+import { getErrorMessage } from '../utils';
+import { SubmitTarget } from 'react-router';
+import { StoreProps } from '../types/store';
 
 export const loginAction =
-  (store) =>
-  async ({ request }) => {
+  (store: StoreProps) =>
+  async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     try {
@@ -16,9 +19,8 @@ export const loginAction =
       toast.success('User logged in successfully');
       store.dispatch(loginUser(response.data));
       return redirect('/');
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.error?.message || 'Incorrect credentials';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
       return null;
     }
@@ -26,8 +28,7 @@ export const loginAction =
 const Login: React.FC = () => {
   const { register, handleSubmit } = useForm();
   const submit = useSubmit();
-
-  const onSubmit = (data) => {
+  const onSubmit = (data: SubmitTarget) => {
     return submit(data, { method: 'post' });
   };
   return (

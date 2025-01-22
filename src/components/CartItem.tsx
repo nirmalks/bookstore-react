@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { editItem, removeItem } from '../features/cart/cartSlice';
 import { formatPrice, generateQuantityOptions } from '../utils';
+import { CartItemProps } from '../types/cart';
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item }: CartItemProps) => {
   const dispatch = useDispatch();
-  const handleQuantity = (e) => {
+  const handleQuantity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(editItem({ id, quantity: parseInt(e.target.value) }));
   };
   console.log(item);
@@ -43,14 +44,12 @@ const CartItem = ({ item }) => {
         >
           {generateQuantityOptions(quantity + (stock - quantity))}
         </select>
-        {/* <div> */}
         <button
           className="mt-4 link link-primary link-hover text-sm form-control"
           onClick={removeFromCart}
         >
           Remove
         </button>
-        {/* </div> */}
       </div>
       <p className="font-medium  sm:ml-auto">{formatPrice(price)}</p>
     </section>

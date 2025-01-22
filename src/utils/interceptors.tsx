@@ -29,11 +29,13 @@ export const setupInterceptors = (store: {
     },
     (error) => {
       console.log('insie error', error.response);
+
       if (error.response) {
         console.log('inside err resp', error.response.status);
         if (error.response.status === 401 || error.response.status === 403) {
           console.error('Unauthorized. Logging out...');
           error.isAuthError = true;
+          return redirect('/login');
         }
       } else if (error.request) {
         console.error('No response from server.');

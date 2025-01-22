@@ -1,6 +1,6 @@
+import { QueryClient } from '@tanstack/react-query';
 import FeaturedBooks from '../components/FeaturedBooks';
 import Hero from '../components/Hero';
-import { queryClient } from '../queryClient';
 import { api } from '../utils/api';
 
 const url = '/books';
@@ -13,7 +13,7 @@ const featuredBooksQuery = {
   },
 };
 
-export const landingLoader = (queryClient) => async () => {
+export const landingLoader = (queryClient: QueryClient) => async () => {
   try {
     const response = await queryClient.ensureQueryData(featuredBooksQuery);
     const books = response.data.content;

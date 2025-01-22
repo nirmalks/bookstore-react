@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { FormRangeProps } from '../types/form';
 
-const FormRange = ({ label, name, size, value, step, maxValue, register }) => {
+const FormRange = ({
+  label,
+  name,
+  size,
+  value,
+  step,
+  maxValue,
+  register,
+}: FormRangeProps) => {
   const [selectedValue, setSelectedValue] = useState(value || maxValue);
-  // const [maxValue, setMaxValue] = useState(maxValue || 1000);
-
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(e.target.value);
   };
   return (
@@ -15,6 +22,7 @@ const FormRange = ({ label, name, size, value, step, maxValue, register }) => {
       </label>
       <input
         type="range"
+        {...register(name, { onChange: handleChange })}
         name={name}
         min={0}
         max={maxValue}
@@ -22,7 +30,6 @@ const FormRange = ({ label, name, size, value, step, maxValue, register }) => {
         onChange={(e) => setSelectedValue(e.target.value)}
         className={`range range-primary ${size}`}
         step={step}
-        {...register(name, { onChange: handleChange })}
       />
       <div className="w-full flex justify-between text-xs px-2 mt-2">
         <span className="font-bold text-md">0</span>

@@ -4,13 +4,11 @@ import { Link } from 'react-router';
 import harry from '/images/harry_potter.jpg?url';
 import alchemist from '/images/the_alchemist.jpg?url';
 
-const carouselImages = [prob, harry, alchemist];
-
 export const Hero = () => {
-  const carouselRef = useRef(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const carousel = carouselRef.current;
-    let interval;
+    let interval: number;
 
     if (carousel) {
       let scrollPosition = 0;

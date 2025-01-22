@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { useLoaderData } from 'react-router';
+import { Order, OrdersListData } from '../types/order';
 
 const OrdersList = (): JSX.Element => {
-  const { orders, meta } = useLoaderData();
-  console.log(orders);
+  const { orders } = useLoaderData<OrdersListData>();
   return (
     <div className="mt-8">
       <div className="overflow-x-auto">
@@ -17,7 +17,7 @@ const OrdersList = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => {
+            {orders.map((order: Order) => {
               const id = order.id;
               const date = dayjs(order.placedDate).format(
                 'MMM Do, YYYY - hh:mm a'

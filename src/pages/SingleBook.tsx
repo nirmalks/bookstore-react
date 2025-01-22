@@ -4,18 +4,21 @@ import { formatPrice, generateQuantityOptions } from '../utils';
 import { useState } from 'react';
 import { addItem } from '../features/cart/cartSlice';
 import { useDispatch } from 'react-redux';
+import { QueryClient } from '@tanstack/react-query';
+import { ParamsWithId } from '../types/params';
 
-const singleBookQuery = (id) => {
+const singleBookQuery = (id: string) => {
   return {
     queryKey: ['singleBook', id],
     queryFn: () => api.get(`/books/${id}`),
   };
 };
+
 export const singleBookLoader =
-  (queryClient) =>
-  async ({ params }) => {
+  (queryClient: QueryClient) =>
+  async ({ params }: ParamsWithId) => {
     const response = await queryClient.ensureQueryData(
-      singleBookQuery(params.id)
+      singleBookQuery(params.id!)
     );
     return { book: response.data };
   };
@@ -27,7 +30,7 @@ const SingleBook: React.FC = () => {
   const image = `/images/${imagePath}`;
   const formattedPrice = formatPrice(price);
   const [quantity, setQuantity] = useState(1);
-  const handleQuantity = (e) => {
+  const handleQuantity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setQuantity(parseInt(e.target.value));
   };
   const updatedBook = { ...book, stock: stock - quantity, quantity };
