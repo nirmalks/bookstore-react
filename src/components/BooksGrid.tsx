@@ -4,11 +4,10 @@ import { Book } from '../types/books';
 
 const BooksGrid: React.FC = () => {
   const { books } = useLoaderData();
-  console.log(books);
+
   return (
     <div className="pt-24 p-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {books.map((book: Book) => {
-        console.log(book);
         const { title, price, imagePath } = book;
         const formattedPrice = formatPrice(price);
         const image = `/images/${imagePath}`;

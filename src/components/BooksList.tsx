@@ -4,7 +4,7 @@ import { Book } from '../types/books';
 
 const BooksList: React.FC = () => {
   const { books } = useLoaderData();
-  console.log(books);
+
   return (
     <div className="mt-12 grid gap-y-8">
       {books.map((book: Book) => {

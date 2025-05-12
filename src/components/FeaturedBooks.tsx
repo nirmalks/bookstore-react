@@ -1,7 +1,7 @@
 import BooksGrid from './BooksGrid';
 import SectionTitle from './SectionTitle';
 
-const FeaturedProducts = () => {
+const FeaturedBooks = () => {
   return (
     <div className="pt-24 p-8">
       <SectionTitle text="Featured Books" />
@@ -10,4 +10,4 @@ const FeaturedProducts = () => {
   );
 };
 
-export default FeaturedProducts;
+export default FeaturedBooks;
