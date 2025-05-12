@@ -16,6 +16,10 @@ export const loginAction =
     const data = Object.fromEntries(formData);
     try {
       const response = await api.post('/login', data);
+
+      if (response.status !== 200 || !response.data) {
+        throw new Error('Login failed');
+      }
       toast.success('User logged in successfully');
       store.dispatch(loginUser(response.data));
       return redirect('/');
@@ -26,7 +30,11 @@ export const loginAction =
     }
   };
 const Login: React.FC = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const submit = useSubmit();
   const onSubmit = (data: SubmitTarget) => {
     return submit(data, { method: 'post' });
@@ -51,6 +59,7 @@ const Login: React.FC = () => {
               message: 'Please enter a minimum of 3 characters',
             },
           }}
+          error={errors.username}
         />
         <FormInput
           type="password"
@@ -64,6 +73,7 @@ const Login: React.FC = () => {
               message: 'Please enter a minimum of 3 characters',
             },
           }}
+          error={errors.password}
         />
         <div className="mt-4">
           <SubmitBtn text="Login" />

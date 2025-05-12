@@ -10,6 +10,7 @@ const FormInput = <T extends FieldValues>({
   size = 'w-full max-w-xs',
   register,
   validationSchema,
+  error,
 }: FormInputProps<T>) => {
   return (
     <div className="form-control">
@@ -20,10 +21,12 @@ const FormInput = <T extends FieldValues>({
         {...register(name as Path<T>, validationSchema)}
         type={type}
         name={name}
-        value={defaultValue}
+        defaultValue={defaultValue}
         placeholder={placeholder}
+        id={name}
         className={`input input-bordered input-primary ${size}`}
       />
+      {error && <p className="text-error text-sm mt-1">{error.message}</p>}
     </div>
   );
 };

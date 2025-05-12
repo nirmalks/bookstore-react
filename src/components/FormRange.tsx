@@ -30,6 +30,7 @@ const FormRange = ({
         onChange={(e) => setSelectedValue(e.target.value)}
         className={`range range-primary ${size}`}
         step={step}
+        id={name}
       />
       <div className="w-full flex justify-between text-xs px-2 mt-2">
         <span className="font-bold text-md">0</span>

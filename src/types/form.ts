@@ -9,6 +9,8 @@ export interface FormInputProps<T extends FieldValues> {
   size?: string;
   register: UseFormRegister<T>;
   validationSchema?: RegisterOptions<T, Path<T>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error?: any
 }
 
 export interface FormSelectProps {

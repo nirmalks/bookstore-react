@@ -25,7 +25,11 @@ export const registerAction: ActionFunction = async ({
 };
 
 const Register: React.FC = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const submit = useSubmit();
 
   const onSubmit = (data: SubmitTarget) => {
@@ -50,6 +54,7 @@ const Register: React.FC = () => {
               message: 'Please enter a minimum of 3 characters',
             },
           }}
+          error={errors.username}
         />
         <FormInput
           type="email"
@@ -57,12 +62,9 @@ const Register: React.FC = () => {
           name="email"
           register={register}
           validationSchema={{
-            required: 'username is required',
-            minLength: {
-              value: 3,
-              message: 'Please enter a minimum of 3 characters',
-            },
+            required: 'email is required',
           }}
+          error={errors.email}
         />
         <FormInput
           type="password"
@@ -76,6 +78,7 @@ const Register: React.FC = () => {
               message: 'Please enter a minimum of 3 characters',
             },
           }}
+          error={errors.password}
         />
         <div className="mt-4">
           <SubmitBtn text="Register" />
