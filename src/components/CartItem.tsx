@@ -8,7 +8,6 @@ const CartItem = ({ item }: CartItemProps) => {
   const handleQuantity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(editItem({ id, quantity: parseInt(e.target.value) }));
   };
-  console.log(item);
   const { id, title, price, imagePath, quantity, publishedDate, stock } = item;
   const removeFromCart = () => {
     dispatch(removeItem({ id }));
@@ -26,7 +25,7 @@ const CartItem = ({ item }: CartItemProps) => {
       />
       <div className="sm:ml-16 sm:w-48">
         <h3 className="capitalize font-medium">{title}</h3>
-        <h4 className="mt-2 capitalize text-sm text-neutral-content">
+        <h4 className="mt-2 capitalize text-sm text-gray-500">
           {publishedDate}
         </h4>
       </div>

@@ -19,7 +19,6 @@ export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
     const user = store.getState().userState.user;
     const { cartItems } = store.getState().cartState;
     const orderItems = cartItems.map((item: Book) => {
-      console.log(item);
       return {
         price: item.price,
         quantity: item.quantity,
@@ -33,7 +32,11 @@ export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
     };
 
     try {
-      await api.post('/orders/direct', { ...info });
+      const response = await api.post('/orders/direct', { ...info });
+      if (response.status !== 200 || !response.data) {
+        throw new Error('Failed to place order');
+      }
+      console.log('success');
       queryClient.removeQueries({ queryKey: ['orders'] });
       store.dispatch(clearCart());
       toast.success('Order placed successfully');
@@ -46,7 +49,11 @@ export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
   };
 };
 const CheckoutForm = () => {
-  const { register, handleSubmit } = useForm<CheckoutFormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CheckoutFormData>();
   const submit = useSubmit();
   const onSubmit = (data: CheckoutFormData) => {
     return submit(data, { method: 'post' });
@@ -60,20 +67,50 @@ const CheckoutForm = () => {
           name="address"
           type="text"
           register={register}
+          validationSchema={{
+            required: 'address is required',
+          }}
+          error={errors.address}
         />
-        <FormInput label="City" name="city" type="text" register={register} />
-        <FormInput label="State" name="state" type="text" register={register} />
+        <FormInput
+          label="City"
+          name="city"
+          type="text"
+          register={register}
+          validationSchema={{
+            required: 'city  is required',
+          }}
+          error={errors.city}
+        />
+        <FormInput
+          label="State"
+          name="state"
+          type="text"
+          register={register}
+          validationSchema={{
+            required: 'state  is required',
+          }}
+          error={errors.state}
+        />
         <FormInput
           label="Country"
           name="country"
           type="text"
           register={register}
+          validationSchema={{
+            required: 'country  is required',
+          }}
+          error={errors.country}
         />
         <FormInput
           label="Pincode"
           name="pinCode"
           type="text"
           register={register}
+          validationSchema={{
+            required: 'pincode is required',
+          }}
+          error={errors.pinCode}
         />
         <div className="mt-4 col-span-2">
           <SubmitBtn text="Order now" />

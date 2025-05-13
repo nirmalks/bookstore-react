@@ -56,7 +56,7 @@ const cartSlice = createSlice({
     removeItem: (state: CartState, action: PayloadAction<RemoveItemPayload>) => {
       const { id } = action.payload
       const existingBook = state.cartItems.find((existingBook: Book) => existingBook.id === id);
-      console.log(existingBook)
+
       if (existingBook) {
         state.cartItems = state.cartItems.filter((book: Book) => book.id !== id)
         state.numItemsInCart -= existingBook.quantity || 0;
