@@ -1,6 +1,7 @@
 import { redirect } from 'react-router';
 import { AppDispatch, RootState } from '../store';
 import { api } from './api';
+import { logoutUser } from '../features/user/userSlice';
 
 export const setupInterceptors = (store: {
   getState: () => RootState;
@@ -35,7 +36,8 @@ export const setupInterceptors = (store: {
         if (error.response.status === 401 || error.response.status === 403) {
           console.error('Unauthorized. Logging out...');
           error.isAuthError = true;
-          return redirect('/login');
+          store.dispatch(logoutUser());
+          window.location.href = '/login';
         }
       } else if (error.request) {
         console.error('No response from server.');

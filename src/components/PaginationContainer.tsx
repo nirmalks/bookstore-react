@@ -6,8 +6,7 @@ const PaginationContainer = () => {
   const navigate = useNavigate();
 
   const { meta } = useLoaderData();
-  const { totalPages, number } = meta; // `number` is zero-based
-  console.log(totalPages, number);
+  const { totalPages, number } = meta ?? {};
 
   const pages = Array.from({ length: totalPages }, (_, index) => {
     return index + 1; // Generate one-based page numbers for display

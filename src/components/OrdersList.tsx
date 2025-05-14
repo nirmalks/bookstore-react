@@ -17,20 +17,21 @@ const OrdersList = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order: Order) => {
-              const id = order.id;
-              const date = dayjs(order.placedDate).format(
-                'MMM Do, YYYY - hh:mm a'
-              );
-              return (
-                <tr key={id}>
-                  <td>{order.address.address}</td>
-                  <td>{order.items.length}</td>
-                  <td>{order.totalCost}</td>
-                  <td>{date}</td>
-                </tr>
-              );
-            })}
+            {Array.isArray(orders) &&
+              orders.map((order: Order) => {
+                const id = order.id;
+                const date = dayjs(order.placedDate).format(
+                  'MMM Do, YYYY - hh:mm a'
+                );
+                return (
+                  <tr key={id}>
+                    <td>{order.address.address}</td>
+                    <td>{order.items.length}</td>
+                    <td>{order.totalCost}</td>
+                    <td>{date}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

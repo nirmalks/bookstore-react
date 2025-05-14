@@ -34,7 +34,7 @@ export const renderWithProviders = (
     routes,
     ...renderOptions
   }: {
-    preloadedState?: Partial<{ userState: UserState; cartState: any }>;
+    preloadedState?: Partial<{ userState: UserState; cartState: CartState }>;
     store?: AppStore;
     routes?: RouteObject[];
   } & RenderOptions = {}
@@ -50,7 +50,6 @@ export const renderWithProviders = (
         element: <div>Orders Page</div>,
       },
     ];
-
     const router = createMemoryRouter(routes || defaultRoutes, {
       initialEntries: ['/'],
     });

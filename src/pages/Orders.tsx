@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, redirect } from 'react-router';
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router';
 import { toast } from 'react-toastify';
 import SectionTitle from '../components/SectionTitle';
 import { api } from '../utils/api';
@@ -7,13 +7,13 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayjs from 'dayjs';
 import PaginationContainer from '../components/PaginationContainer';
 import { getErrorMessage } from '../utils';
-import { QueryClient } from '@tanstack/react-query';
-import { RootState, AppDispatch } from '../store';
+import store, { AppDispatch, RootState } from '../store';
 import { QueryParams } from '../types/params';
 import { User } from '../types/user';
+import { queryClient } from '../queryClient';
+import { QueryClient } from '@tanstack/react-query';
 dayjs.extend(advancedFormat);
 const ordersQuery = (params: QueryParams, user: User) => {
-  console.log(user);
   return {
     queryKey: ['orders', user.userId, params.page ? parseInt(params.page) : 1],
     queryFn: () =>
