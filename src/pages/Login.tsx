@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Link, redirect, useSubmit } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import FormInput from '../components/FormInput';
 import { SubmitBtn } from '../components/SubmitBtn';
 import { toast } from 'react-toastify';
@@ -6,44 +6,33 @@ import { loginUser } from '../features/user/userSlice';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
 import { getErrorMessage } from '../utils';
-import { SubmitTarget } from 'react-router';
-import { StoreProps } from '../types/store';
+import store from '../store';
 
-export const loginAction =
-  (store: StoreProps) =>
-  async ({ request }: ActionFunctionArgs) => {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-    try {
-      const response = await api.post('/login', data);
-
-      if (response.status !== 200 || !response.data) {
-        throw new Error('Login failed');
-      }
-      toast.success('User logged in successfully');
-      store.dispatch(loginUser(response.data));
-      return redirect('/');
-    } catch (error: unknown) {
-      const errorMessage = getErrorMessage(error);
-      toast.error(errorMessage);
-      return null;
-    }
-  };
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const submit = useSubmit();
-  const onSubmit = (data: SubmitTarget) => {
-    return submit(data, { method: 'post' });
+  const onSubmit = async (data: Record<string, unknown>) => {
+    try {
+      const response = await api.post('/login', data);
+      if (response.status !== 200 || !response.data) {
+        throw new Error('Login failed');
+      }
+      toast.success('User logged in successfully');
+      store.dispatch(loginUser(response.data));
+      navigate('/');
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+    }
   };
   return (
     <section className="h-screen grid place-items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        method="POST"
         className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
       >
         <h4 className="text-center text-3xl font-bold">Login</h4>

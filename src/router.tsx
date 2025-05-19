@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router';
 import HomeLayout from './pages/HomeLayout';
 import ErrorPage from './pages/Error';
 import Landing, { landingLoader } from './pages/Landing';
-import Login, { loginAction } from './pages/Login';
+import Login from './pages/Login';
 import Register, { registerAction } from './pages/Register';
 
 import About from './pages/About';
@@ -68,7 +68,6 @@ const router = createBrowserRouter([
     path: '/login',
     element: <Login />,
     errorElement: <ErrorPage />,
-    action: loginAction(store),
   },
   {
     path: '/register',
