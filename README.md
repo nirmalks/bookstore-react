@@ -1,6 +1,8 @@
-* Bookstore using react powered by a Spring Boot BE - https://github.com/nirmalks/bookstore-spring-be
+* Bookstore using React and TS, powered by a Spring Boot BE - https://github.com/nirmalks/bookstore-spring-be
 * Uses Redux for state management
-* React router for routing and react-hook-form for forms
+* React router for routing, loaders and actions
+* React hook form for forms and form validation
 * Tanstack query is used only for caching
-* UI library is daisy ui
-* Tests are written using jest
+* Daisy ui as UI library
+* Unit Tests are written using jest (not comprehensive)
+* Vite as build tool
