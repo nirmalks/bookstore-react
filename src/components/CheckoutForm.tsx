@@ -6,18 +6,21 @@ import { toast } from 'react-toastify';
 import { clearCart } from '../features/cart/cartSlice';
 import { api } from '../utils/api';
 import { QueryClient } from '@tanstack/react-query';
-import { StoreProps } from '../types/store';
 import { getErrorMessage } from '../utils';
 import { CheckoutFormData } from '../types/checkout';
 import { Book } from '../types/books';
+import { AppState } from '../types/store';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../store';
 
-export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
+export const checkoutAction = (queryClient: QueryClient) => {
   return async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
+    const dispatch = useAppDispatch();
     const { address, city, state, country, pinCode } =
       Object.fromEntries(formData);
-    const user = store.getState().userState.user;
-    const { cartItems } = store.getState().cartState;
+    const { user } = useSelector((state: AppState) => state.userState);
+    const { cartItems } = useSelector((state: AppState) => state.cartState);
     const orderItems = cartItems.map((item: Book) => {
       return {
         price: item.price,
@@ -36,9 +39,8 @@ export const checkoutAction = (store: StoreProps, queryClient: QueryClient) => {
       if (response.status !== 200 || !response.data) {
         throw new Error('Failed to place order');
       }
-      console.log('success');
       queryClient.removeQueries({ queryKey: ['orders'] });
-      store.dispatch(clearCart());
+      dispatch(clearCart());
       toast.success('Order placed successfully');
       return redirect('/orders?page=0');
     } catch (error) {

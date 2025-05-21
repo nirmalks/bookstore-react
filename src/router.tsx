@@ -3,7 +3,7 @@ import HomeLayout from './pages/HomeLayout';
 import ErrorPage from './pages/Error';
 import Landing, { landingLoader } from './pages/Landing';
 import Login from './pages/Login';
-import Register, { registerAction } from './pages/Register';
+import Register from './pages/Register';
 
 import About from './pages/About';
 import { queryClient } from './queryClient';
@@ -11,9 +11,9 @@ import store from './store';
 import Books, { booksLoader } from './pages/Books';
 import SingleBook, { singleBookLoader } from './pages/SingleBook';
 import Cart from './pages/Cart';
-import Checkout, { checkoutLoader } from './pages/Checkout';
-import { checkoutAction } from './components/CheckoutForm';
+import Checkout from './pages/Checkout';
 import Orders, { ordersLoader } from './pages/Orders';
+import { checkoutAction } from './components/CheckoutForm';
 
 const router = createBrowserRouter([
   {
@@ -53,8 +53,7 @@ const router = createBrowserRouter([
         path: '/checkout',
         element: <Checkout />,
         errorElement: <ErrorPage></ErrorPage>,
-        loader: checkoutLoader(store),
-        action: checkoutAction(store, queryClient),
+        action: checkoutAction(queryClient),
       },
       {
         path: '/orders',
@@ -73,7 +72,6 @@ const router = createBrowserRouter([
     path: '/register',
     element: <Register />,
     errorElement: <ErrorPage />,
-    action: registerAction,
   },
 ]);
 

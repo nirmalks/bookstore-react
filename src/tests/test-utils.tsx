@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { configureStore, UnknownAction } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { createMemoryRouter, RouteObject, RouterProvider } from 'react-router';
+import {
+  createBrowserRouter,
+  createMemoryRouter,
+  RouteObject,
+  RouterProvider,
+} from 'react-router';
 import userReducer from '../features/user/userSlice';
 import cartReducer from '../features/cart/cartSlice';
 import { UserState } from '../types/user';
@@ -50,9 +55,7 @@ export const renderWithProviders = (
         element: <div>Orders Page</div>,
       },
     ];
-    const router = createMemoryRouter(routes || defaultRoutes, {
-      initialEntries: ['/'],
-    });
+    const router = createBrowserRouter(routes || defaultRoutes, {});
 
     return (
       <Provider store={store}>

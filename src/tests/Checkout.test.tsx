@@ -4,11 +4,9 @@ import { renderWithProviders } from './test-utils';
 import { Book } from '../types/books';
 import userEvent from '@testing-library/user-event';
 import Checkout from '../pages/Checkout';
-import { QueryClient } from '@tanstack/react-query';
 import { RouteObject } from 'react-router';
-import CheckoutForm, { checkoutAction } from '../components/CheckoutForm';
-import store from '../store';
 
+const mockSubmit = jest.fn();
 jest.mock('../utils/api');
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
@@ -16,13 +14,14 @@ jest.mock('react-router', () => ({
   useSubmit: jest.fn(() => mockSubmit),
 }));
 
-const mockSubmit = jest.fn();
-
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <CheckoutForm />,
-    action: checkoutAction(store, new QueryClient()),
+    element: <Checkout />,
+  },
+  {
+    path: '/login',
+    element: <div>Login Page</div>,
   },
   {
     path: '/orders',
@@ -43,19 +42,6 @@ describe('Checkout Page Tests', () => {
     quantity: 1,
   };
 
-  const book2 = {
-    id: 2,
-    title: 'Clean Code',
-    authorIds: [102],
-    price: 35.5,
-    stock: 7,
-    isbn: '978-0132350884',
-    publishedDate: '2008-08-11',
-    genreIds: [3],
-    imagePath: '/images/clean-code.jpg',
-    quantity: 2,
-  };
-
   test('shows "Your cart is empty" when no items', () => {
     renderWithProviders(<Checkout />, {
       preloadedState: {
@@ -68,10 +54,16 @@ describe('Checkout Page Tests', () => {
           orderTotal: 0,
         },
         userState: {
-          user: null,
+          user: {
+            userId: 123,
+            username: 'testuser',
+            email: 'test@example.com',
+            token: 'abc123',
+          },
           theme: 'light',
         },
       },
+      routes,
     });
 
     expect(screen.getByText(/your cart is empty/i)).toBeInTheDocument();
@@ -89,10 +81,16 @@ describe('Checkout Page Tests', () => {
           orderTotal: 42.99,
         },
         userState: {
-          user: null,
+          user: {
+            userId: 123,
+            username: 'testuser',
+            email: 'test@example.com',
+            token: 'abc123',
+          },
           theme: 'light',
         },
       },
+      routes,
     });
 
     expect(screen.getByText(/42.99/i)).toBeInTheDocument();
@@ -116,7 +114,12 @@ describe('Checkout Page Tests', () => {
           orderTotal: 42.99,
         },
         userState: {
-          user: null,
+          user: {
+            userId: 123,
+            username: 'testuser',
+            email: 'test@example.com',
+            token: 'abc123',
+          },
           theme: 'light',
         },
       },

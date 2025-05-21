@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router';
+import { ActionFunctionArgs, redirect } from 'react-router';
 import { toast } from 'react-toastify';
 import SectionTitle from '../components/SectionTitle';
 import { api } from '../utils/api';
@@ -7,10 +7,9 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayjs from 'dayjs';
 import PaginationContainer from '../components/PaginationContainer';
 import { getErrorMessage } from '../utils';
-import store, { AppDispatch, RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
 import { QueryParams } from '../types/params';
 import { User } from '../types/user';
-import { queryClient } from '../queryClient';
 import { QueryClient } from '@tanstack/react-query';
 dayjs.extend(advancedFormat);
 const ordersQuery = (params: QueryParams, user: User) => {
@@ -45,6 +44,9 @@ export const ordersLoader =
       const response = await queryClient.ensureQueryData(
         ordersQuery(params, user)
       );
+      if (response.status !== 200) {
+        throw new Error('Unable to fetch orders');
+      }
       const { content: orders, ...meta } = response.data;
       return { orders, meta, user };
     } catch (error: unknown) {

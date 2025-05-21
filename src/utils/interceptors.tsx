@@ -24,7 +24,6 @@ export const setupInterceptors = (store: {
 
   api.interceptors.response.use(
     (response) => {
-      console.log('Response Interceptor Triggered');
       return response;
     },
     (error) => {
@@ -34,12 +33,10 @@ export const setupInterceptors = (store: {
         console.log('inside err resp', error.response.status);
         if (error.response.status === 401 || error.response.status === 403) {
           console.error('Unauthorized. Logging out...');
-          error.isAuthError = true;
-          console.log(store.getState().userState.user);
+
           if (store.getState().userState.user) {
             store.dispatch(logoutUser());
           }
-          console.log(window.location.href);
           if (window.location.pathname !== '/login') {
             window.location.href = '/login';
           }

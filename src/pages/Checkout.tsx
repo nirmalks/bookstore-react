@@ -1,21 +1,24 @@
 import { useSelector } from 'react-redux';
 import SectionTitle from '../components/SectionTitle';
-import { redirect } from 'react-router';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import CartTotal from '../components/CartTotal';
 import CheckoutForm from '../components/CheckoutForm';
-import { AppState, StoreProps } from '../types/store';
+import { AppState } from '../types/store';
+import { useEffect } from 'react';
 
-export const checkoutLoader = (store: StoreProps) => () => {
-  const user = store.getState().userState.user;
-  if (!user) {
-    toast.warn('You must be logged in to checkout');
-    return redirect('/login');
-  }
-  return null;
-};
 const Checkout: React.FC = () => {
   const cartTotal = useSelector((state: AppState) => state.cartState.cartTotal);
+  const user = useSelector((state: AppState) => state.userState.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      toast.warn('You must be logged in to checkout');
+      navigate('/login');
+    }
+  }, [user, navigate]);
+  if (!user) return null;
   if (cartTotal === 0) {
     return <SectionTitle text="Your cart is empty" />;
   }

@@ -1,28 +1,10 @@
-import { Link, redirect, SubmitTarget, useSubmit } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import FormInput from '../components/FormInput';
 import { SubmitBtn } from '../components/SubmitBtn';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
-import { ActionFunction } from 'react-router';
 import { getErrorMessage } from '../utils';
-import { ActionFunctionArgs } from 'react-router';
-
-export const registerAction: ActionFunction = async ({
-  request,
-}: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  try {
-    await api.post('/register', data);
-    toast.success('User registered successfully');
-    return redirect('/login');
-  } catch (error: unknown) {
-    const errorMessage = getErrorMessage(error);
-    toast.error(errorMessage);
-    return null;
-  }
-};
 
 const Register: React.FC = () => {
   const {
@@ -30,10 +12,19 @@ const Register: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const submit = useSubmit();
-
-  const onSubmit = (data: SubmitTarget) => {
-    return submit(data, { method: 'post' });
+  const navigate = useNavigate();
+  const onSubmit = async (data: Record<string, unknown>) => {
+    try {
+      const response = await api.post('/users/register', data);
+      if (response.status !== 201 || !response.data) {
+        throw new Error('Registration failed');
+      }
+      toast.success('User registered successfully');
+      navigate('/login');
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
+    }
   };
   return (
     <section className="h-screen grid place-items-center">

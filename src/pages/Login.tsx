@@ -6,10 +6,11 @@ import { loginUser } from '../features/user/userSlice';
 import { useForm } from 'react-hook-form';
 import { api } from '../utils/api';
 import { getErrorMessage } from '../utils';
-import store from '../store';
+import { useAppDispatch } from '../store';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
         throw new Error('Login failed');
       }
       toast.success('User logged in successfully');
-      store.dispatch(loginUser(response.data));
+      dispatch(loginUser(response.data));
       navigate('/');
     } catch (error: unknown) {
       const errorMessage = getErrorMessage(error);
