@@ -18,19 +18,6 @@ describe('Cart Page Tests', () => {
     quantity: 1,
   };
 
-  const book2 = {
-    id: 2,
-    title: 'Clean Code',
-    authorIds: [102],
-    price: 35.5,
-    stock: 7,
-    isbn: '978-0132350884',
-    publishedDate: '2008-08-11',
-    genreIds: [3],
-    imagePath: '/images/clean-code.jpg',
-    quantity: 2,
-  };
-
   test('shows "Your cart is empty" when no items', () => {
     renderWithProviders(<Cart />, {
       preloadedState: {

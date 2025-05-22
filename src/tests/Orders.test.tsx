@@ -1,12 +1,5 @@
 import { act, screen, waitFor } from '@testing-library/react';
-import {
-  createMemoryRouter,
-  createRoutesFromElements,
-  Outlet,
-  Route,
-  RouteObject,
-  RouterProvider,
-} from 'react-router';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 import { render } from '@testing-library/react';
 import { toast } from 'react-toastify';
 import { redirect } from 'react-router';

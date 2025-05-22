@@ -8,7 +8,7 @@ export const Hero = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const carousel = carouselRef.current;
-    let interval: number;
+    let interval: ReturnType<typeof setInterval>;
 
     if (carousel) {
       let scrollPosition = 0;
