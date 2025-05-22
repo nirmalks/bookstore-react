@@ -26,8 +26,8 @@ export interface Book {
 }
 
 export interface AllBooksLoaderData {
-  books: Book[]; // List of books
-  params: Params; // Query or route parameters
-  meta: Meta; // Metadata for pagination
-  genres: Genre[]; // List of genres
+  books: Book[];
+  params: Params;
+  meta: Meta;
+  genres: Genre[];
 }

@@ -4,7 +4,6 @@ export type SingleIdParams = {
 
 export type QueryParams = {
   [k: string]: string
-
 }
 
 export type ParamsWithId = {

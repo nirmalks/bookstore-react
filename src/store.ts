@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { setupInterceptors } from './utils/interceptors'; // Make sure the path is correct
+import { setupInterceptors } from './utils/interceptors';
 import userReducer from './features/user/userSlice';
 import cartReducer from './features/cart/cartSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
