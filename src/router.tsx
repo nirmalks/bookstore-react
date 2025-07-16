@@ -8,13 +8,11 @@ import Register from './pages/Register';
 import About from './pages/About';
 import { queryClient } from './queryClient';
 import store from './store';
-import Books, { booksLoader } from './pages/Books';
 import SingleBook, { singleBookLoader } from './pages/SingleBook';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders, { ordersLoader } from './pages/Orders';
 import { checkoutAction } from './components/CheckoutForm';
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -34,9 +32,14 @@ const router = createBrowserRouter([
       },
       {
         path: '/books',
-        element: <Books />,
+        lazy: async () => {
+          const { default: Books, booksLoader } = await import('./pages/Books');
+          return {
+            Component: Books,
+            loader: booksLoader(queryClient),
+          };
+        },
         errorElement: <ErrorPage></ErrorPage>,
-        loader: booksLoader(queryClient),
       },
       {
         path: '/books/:id',
