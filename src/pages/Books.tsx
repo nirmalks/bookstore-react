@@ -4,6 +4,7 @@ import BooksContainer from '../components/BooksContainer';
 import { api } from '../utils/api';
 import { ActionFunctionArgs } from 'react-router';
 import { QueryParams } from '../types/params';
+import { retry } from '@reduxjs/toolkit/query';
 
 const booksSearchUrl = '/books/search';
 const getGenreUrl = '/genres';
@@ -27,6 +28,7 @@ const allBooksQuery = (queryParams: QueryParams) => {
       api.get(booksSearchUrl, {
         params: queryParams,
       }),
+    retry: 2,
   };
 };
 
@@ -44,11 +46,19 @@ export const booksLoader =
     const params = Object.fromEntries([
       ...new URL(request.url).searchParams.entries(),
     ]);
-    const response = await queryClient.ensureQueryData(allBooksQuery(params));
-    const genreResponse = await queryClient.ensureQueryData(genreQuery());
-    const { content: books, ...meta } = response.data;
-    const { content: genres } = genreResponse.data;
-    return { books, params, meta, genres };
+    try {
+      const response = await queryClient.ensureQueryData(allBooksQuery(params));
+      const genreResponse = await queryClient.ensureQueryData(genreQuery());
+      const { content: books, ...meta } = response.data;
+      const { content: genres } = genreResponse.data;
+      return { books, params, meta, genres };
+    } catch (error) {
+      console.error('Loader error:', error);
+      throw new Response('Failed to load books', {
+        status: 500,
+        statusText: 'Failed to load books',
+      });
+    }
   };
 
 const Books = () => {
